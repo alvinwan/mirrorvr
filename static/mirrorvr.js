@@ -27,8 +27,8 @@ function Client() {
     )
   })
 
-  this.newPreview = function() {
-    socket.emit('newPreview');
+  this.newMirror = function() {
+    socket.emit('newMirror');
   }
 
   this.newHost = function() {
@@ -61,7 +61,7 @@ function Session() {
       isHost = true;
       isViewer = false;
     } else {
-      client.newPreview();
+      client.newMirror();
       isHost = false;
       isViewer = true;
     }

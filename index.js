@@ -6,9 +6,10 @@ var format = require('string-format')
 var swig = require('swig');
 var bodyParser = require('body-parser');
 
-const URL_FORMAT = '/{game_hash}'
+/**
+ * Setup templates to use Jinja-like rendering
+ */
 const BASE_URL = 'localhost:3000'
-format.extend(String.prototype, {})
 
 var swig = new swig.Swig();
 app.engine('html', swig.renderFile);
@@ -16,9 +17,18 @@ app.set('view engine', 'html');
 app.use(express.static('static'));
 app.use(bodyParser.urlencoded({ extended: false }))
 
+/**
+ * Define pages
+ */
+
 app.get('/', function(req, res) {
    res.render('index');
 });
+
+
+/**
+ * Run application on port 3000
+ */
 
 var port = process.env.PORT || 3000;
 
@@ -26,16 +36,9 @@ http.listen(port, function(){
   console.log('listening on *:', port);
 });
 
-// http://stackoverflow.com/a/1349426/4855984
-function makeRoomId() {
-     var text = "";
-     var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-
-     for( var i=0; i < 5; i++ )
-         text += possible.charAt(Math.floor(Math.random() * possible.length));
-
-     return text;
-}
+/**
+ * Handle socket interactions
+ */
 
 io.on('connection', function(socket) {
 
@@ -45,8 +48,8 @@ io.on('connection', function(socket) {
     socket.join(roomId);
   });
 
-  socket.on('newPreview', function() {
-    console.log(" * [" + socket.room +  "] participant registered as 'preview'")
+  socket.on('newMirror', function() {
+    console.log(" * [" + socket.room +  "] participant registered as 'mirror'")
   });
 
   socket.on('newHost', function() {
