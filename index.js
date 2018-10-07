@@ -45,8 +45,8 @@ io.on('connection', function(socket) {
   });
 
   socket.on('newHost', function() {
-    socket.on('move', function(data) {
-      socket.broadcast.emit('move', data)
+    socket.on('onMove', function(data) {
+      io.emit('move', data)
     });
   });
 });

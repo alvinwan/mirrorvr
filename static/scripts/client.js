@@ -12,15 +12,23 @@ function Client() {
   });
 
   socket.on('move', function(data) {
-    session.move(
+    session.movePlayer(
       data["playerId"],
       data["position"],
       data["rotation"]
     )
   })
 
-  this.move = function(playerId, position, rotation) {
-    socket.emit('move', {
+  this.newPreview = function() {
+    socket.emit('newPreview');
+  }
+
+  this.newHost = function() {
+    socket.emit('newHost');
+  }
+
+  this.onMove = function(playerId, position, rotation) {
+    socket.emit('onMove', {
       "playerId": playerId,
       "position": position,
       "rotation": rotation
