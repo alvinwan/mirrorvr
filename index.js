@@ -27,7 +27,7 @@ http.listen(port, function(){
 });
 
 // http://stackoverflow.com/a/1349426/4855984
-function makeid() {
+function makeRoomId() {
      var text = "";
      var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
 
@@ -37,16 +37,22 @@ function makeid() {
      return text;
 }
 
-// TODO: use namespaces
-// TODO: emit to hosts only
 io.on('connection', function(socket) {
 
+  socket.on('roomId', function(roomId) {
+    console.log(" * [" + roomId +  "] new participant");
+    socket.room = roomId;
+    socket.join(roomId);
+  });
+
   socket.on('newPreview', function() {
+    console.log(" * [" + socket.room +  "] participant registered as 'preview'")
   });
 
   socket.on('newHost', function() {
+    console.log(" * [" + socket.room +  "] participant registered as 'host'")
     socket.on('onMove', function(data) {
-      socket.broadcast.emit('move', data)
+      socket.broadcast.to(socket.room).emit('move', data)
     });
   });
 });

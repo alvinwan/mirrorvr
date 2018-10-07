@@ -10,6 +10,11 @@ function Client() {
     session = _session;
   }
 
+  this.join = function(roomId) {
+    console.log(' * Joining ' + roomId);
+    socket.emit('roomId', roomId);
+  }
+
   socket.on('connect', function() {
     console.log(' * Connection established');
   });
@@ -62,6 +67,10 @@ function Session() {
     }
   }
 
+  this.join = function(roomId) {
+    client.join(roomId);
+  }
+
   this.registerCamera = function(camera) {
     this.camera = camera
   }
@@ -96,6 +105,7 @@ function mobilecheck() {
  */
 function initialize() {
   var session = new Session();
+  session.join(typeof roomId === 'undefined' ? window.location.href : roomId);
   session.start();
 
   AFRAME.registerComponent('camera-listener', {
