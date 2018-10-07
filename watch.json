@@ -1,0 +1,9 @@
+{
+  "restart": {
+    "include": [
+      "\\.js$",
+      "\\.html$"
+    ]
+  },
+  "throttle": 100
+}

@@ -1,0 +1,36 @@
+{
+  "name": "jumpeee",
+  "version": "1.0.0",
+  "description": "platform game using computer as console, mobile devices as controllers",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/alvinwan/jumpeee.git"
+  },
+  "keywords": [
+    "game",
+    "mobile",
+    "web",
+    "socket",
+    "multiplayer"
+  ],
+  "author": "Alvin Wan, Emily Chang",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/alvinwan/jumpeee/issues"
+  },
+  "homepage": "https://github.com/alvinwan/jumpeee#readme",
+  "dependencies": {
+    "body-parser": "^1.16.0",
+    "express": "^4.10.2",
+    "socketio": "^1.0.0",
+    "string-format": "^0.5.0",
+    "swig": "^1.4.2"
+  },
+  "engine": {
+    "node": "6.1.0"
+  }
+}

@@ -1,5 +1,5 @@
 <!-- Created by Alvin Wan alvinwan.com -->
-<-- Please dont republish online! -->
+<!-- Please dont republish online! -->
 
 <!DOCTYPE html>
 <html>
@@ -7,7 +7,11 @@
     <title>Stage 1 | The Path Not Taken</title>
     <meta name="description" content="">
     <script src="https://aframe.io/releases/0.7.0/aframe.min.js"></script>
-    <script src="scripts/vrpac.js"></script>
+    <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
+    <script src="/static/scripts/vrpac.js"></script>
+    <script src="/static/scripts/session.js"></script>
+    <script src="/static/scripts/client.js"></script>
+    <script src="/static/scripts/main.js"></script>
     <script>
     AFRAME.registerComponent('magic-rock', {
       init: function () {
@@ -36,7 +40,7 @@
 
     <!-- Default lighting injected by A-Frame. -->
 
-    <a-entity camera look-controls wasd-controls position="0 0.5 2" rotation="0 0 0">
+    <a-entity camera-listener camera look-controls wasd-controls position="0 0.5 2" rotation="0 0 0">
       <a-entity cursor="fuse: true; fuseTimeout: 250"
                 position="0 0 -1"
                 geometry="primitive: ring; radiusInner: 0.02; radiusOuter: 0.03"
