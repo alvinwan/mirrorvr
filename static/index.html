@@ -8,14 +8,9 @@
     <meta name="description" content="">
     <script src="https://aframe.io/releases/0.7.0/aframe.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.1.1/socket.io.js"></script>
-    <script src="/scripts/utils.js" type="text/javascript"></script>
+    <script src="/scripts/prevr.js" type="text/javascript"></script>
     <script src="/scripts/vrpac.js" type="text/javascript"></script>
-    <script src="/scripts/session.js" type="text/javascript"></script>
-    <script src="/scripts/client.js" type="text/javascript"></script>
     <script>
-    var session = new Session();
-    session.start();
-
     AFRAME.registerComponent('magic-rock', {
       init: function () {
         this.el.addEventListener('click', function (evt) {
@@ -25,14 +20,6 @@
             controlBox.setAttribute('position', {x: 0.25, y: -0.1, z: 0.5});
           }, 1000)
         });
-      }
-    });
-    AFRAME.registerComponent('camera-listener', {
-      tick: function () {
-        session.registerCamera(this.el.sceneEl.camera.el);
-        var position = session.camera.getAttribute('position');
-        var rotation = session.camera.getAttribute('rotation');
-        session.onMove(0, position, rotation);
       }
     });
     </script>
