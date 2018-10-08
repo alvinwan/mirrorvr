@@ -9,7 +9,6 @@ var bodyParser = require('body-parser');
 /**
  * Setup templates to use Jinja-like rendering
  */
-const BASE_URL = 'localhost:3000'
 
 var swig = new swig.Swig();
 app.engine('html', swig.renderFile);

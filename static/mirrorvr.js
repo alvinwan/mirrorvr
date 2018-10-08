@@ -1,9 +1,23 @@
 /**
+ * MirrorVR
+ * ========
+ * A live mirror for your aframe virtual reality projects.
+ *
+ * To get started, simply include the following after you import aframe.
+ * <script src="http://mirrorvr.alvinwan.com/mirrorvr.js" type="text/javascript"></script>
+ *
+ * For more information, see http://mirrorvr.alvinwan.com.
+ *
+ * @author Alvin Wan
+ * @site alvinwan.com
+ */
+
+/**
  * Manage connection with server, via sockets
  */
-function Client() {
+function Client(host) {
 
-  var socket = io();
+  var socket = io(host);
   var session;
 
   this.register = function(_session) {
@@ -48,9 +62,9 @@ function Client() {
 /**
  * Manage game session
  */
-function Session() {
+function Session(host) {
 
-  var client = new Client();
+  var client = new Client(host);
   var isHost = false;
   var isViewer = true;
 
@@ -104,8 +118,11 @@ function mobilecheck() {
  * Initialize listener for camera
  */
 function initialize() {
-  var session = new Session();
-  session.join(typeof roomId === 'undefined' ? window.location.href : roomId);
+  var host = typeof host === 'https://mirrorvr.herokuapp.com/' ? host;
+  var roomId = typeof roomId === 'undefined' ? window.location.href : roomId;
+
+  var session = new Session(host);
+  session.join(roomId);
   session.start();
 
   AFRAME.registerComponent('camera-listener', {
