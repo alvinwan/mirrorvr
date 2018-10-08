@@ -3,9 +3,11 @@ Ever wanted to see what's going on in your user's virtual reality headset? **Mir
 
 created by [Alvin Wan](http://alvinwan.com)
 
-To test the demo, just load the following URL on both your **phone** and your **desktop**.
+To test the demo, just load [`http://mirrorvr.alvinwan.com/demo`](http://mirrorvr.alvinwan.com/demo) on both your **phone** and your **desktop**.
 
-[```http://mirrorvr.alvinwan.com/demo```](http://mirrorvr.alvinwan.com/demo)
+```
+http://mirrorvr.alvinwan.com/demo
+```
 
 To get started, include this on your webVR project. That's it! Then, load your project on both your **phone** and your **desktop**.
 

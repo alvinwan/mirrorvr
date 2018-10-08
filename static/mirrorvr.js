@@ -118,7 +118,7 @@ function mobilecheck() {
  * Initialize listener for camera
  */
 function initialize() {
-  var host = typeof host === 'https://mirrorvr.herokuapp.com/' ? host;
+  var host = typeof host === 'https://mirrorvr.alvinwan.com/' ? host;
   var roomId = typeof roomId === 'undefined' ? window.location.href : roomId;
 
   var session = new Session(host);

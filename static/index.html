@@ -1,21 +1,65 @@
 <html>
 <head>
-  <title>Mirror VR</title>
+  <title>MirrorVR</title>
+  <link rel="stylesheet" href="styles/style.css">
+  <link href="https://fonts.googleapis.com/css?family=Josefin+Slab:300|Montserrat:400,600" rel="stylesheet">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
 </head>
 <body>
-  <p>To test the demo, just load the following URL on both your <b>phone</b> and your <b>desktop</b>.</p>
+  <header>
+    <a class="back" href="http://alvinwan.com">&larr; alvinwan.com</a>
+    <a class="github" href="http://github.com/alvinwan/mirrorvr"><i class="fab fa-github"></i> &rarr;</a>
+  </header>
+  <div class="title">
+    <div class="logo-container">
+      <div class="logo">
+        <div class="logo-box logo-box1"></div>
+        <div class="logo-box logo-box2"></div>
+      </div>
+    </div>
+    <p class="subtitle">WebVR Utility</p>
+    <div class="bar-container">
+      <span class="bar"></span>
+    </div>
+    <div class="backdrop">
+      <h1>MirrorVR</h1>
+    </div>
+  </div>
+  <div class="wrap-container">
+    <div class="wrap">
+      <p>To test the demo, just load the following URL on both your <b>phone</b> and your <b>desktop</b>.</p>
 
-  <a href="/demo">
-  <code>
-  http://mirrorvr.alvinwan.com/demo
-  </code>
-  </a>
+      <a href="/demo">
+      <code>
+      http://mirrorvr.alvinwan.com/demo
+      </code>
+      </a>
 
-  <p>To get started, include this on your webVR project. That's it! Then, load your project on both your <b>phone</b> and your <b>desktop</b></p>
+      <p>To get started, include this in your webVR project.</p>
 
-  <code>
-    &lt;script src="http://mirrorvr.alvinwan.com/mirrorvr.js" type="text/javascript"&gt;&lt;/script&gt;
-  </code>
+      <code>
+        &lt;script src="http://mirrorvr.alvinwan.com/mirrorvr.js" type="text/javascript"&gt;&lt;/script&gt;
+      </code>
 
-  <p><i>(The default project reads and updates aframe camera position)</i></p>
+      <p>That's it! Then, load your project on both your <b>phone</b> and your <b>desktop</b>.</p>
+
+      <p><b>Note:</b> This project currently only supports <a href="http://aframe.io">aframe.io</a> apps.</p>
+
+      <h2>Configuration</h2>
+
+      <p>To configure a variable, define a global Javascript variable before importing the mirrorvr script.</p>
+
+      <p><b>Room</b>: By default, every unique URL is a new "room". For example, if
+
+        <ul>
+          <li>user A loads example.com on her phone, and</li>
+          <li>user B loads example.com on his desktop,</li>
+        </ul>
+      user B will be mirroring user A. However, if user C loads example.com#hello on his desktop, he will <i>not</i> mirror user A. Explicitly define a room variable to override this default.</p>
+      <p><b>Host</b>: A NodeJS server is required to facilitate communication between the client and the server. <b>By default, MirrorJS uses and provides one at mirrorjs.alvinwan.com</b>. Explicitly define a host variable to use your own NodeJS server.</p>
+      <footer>
+        <p>Made by Alvin, powered by cheesecake</p>
+      </footer>
+    </div>
+  </div>
 </body>

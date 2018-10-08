@@ -1,0 +1,118 @@
+* {
+  font-family:'Montserrat';
+}
+html {
+  background-color:#FFF;
+}
+p {
+  line-height:150%;
+}
+h1 {
+  font-family: 'Josefin Slab';
+  width:100%;
+  font-weight:300;
+  font-size:7em;
+  text-align:center;
+  text-transform:uppercase;
+  margin:0;
+  padding:0.2em 0;
+}
+.bar {
+  display:block;
+  width:3em;
+  height:0.1em;
+  background-color:#333;
+  display:inline-block;
+  margin-top:0.75em;
+}
+.bar-container {
+  text-align:center;
+  width:100%;
+}
+.subtitle {
+  width:100%;
+  text-transform:uppercase;
+  color:#333;
+  letter-spacing:0.15em;
+  font-weight:600;
+  text-align:center;
+  margin-top:2.5em;
+}
+.backdrop {
+  width:100%;
+  background: url('../images/scene.png') center;
+  background-size:contain;
+}
+.backdrop h1 {
+  color: #000;
+  background-color:#FFF;
+  mix-blend-mode: lighten;
+  max-width:100%;
+}
+.logo-box {
+  height:2em;
+  width:1.5em;
+  border:0.1em solid #000;
+}
+.logo-container {
+  width:100%;
+  text-align:center;
+}
+.logo {
+  display:inline-block;
+  width:1.5em;
+  height:2em;
+  padding-right:0.5em;
+  position:relative;
+  margin-top:3em;
+}
+.logo-box2 {
+  position:absolute;
+  bottom:-0.6em;
+  right:-0.1em;
+}
+.wrap-container {
+  width:100%;
+  text-align:center;
+}
+.wrap {
+  display:inline-block;
+  width:90%;
+  max-width:40em;
+  text-align:left;
+}
+code {
+  background-color:#eee;
+  width:100%;
+  border-radius:0.25em;
+  display:inline-block;
+  padding:1em;
+  box-sizing:border-box;
+  overflow-x:scroll;
+}
+header a {
+  background-color:#eee;
+  text-decoration:none;
+  color:#666;
+  padding:1em 1.5em;
+  margin:1em 1em 0 1em;
+  border-radius:2em;
+  display:inline-block;
+}
+header a:hover {
+  color:#333;
+}
+.github {
+  float:right;
+}
+body {
+  padding-bottom:5em;
+}
+footer {
+  border-top:0.1em solid #ccc;
+  margin-top:3em;
+  padding-top:2em;
+  text-align:center;
+  color:#999;
+  font-size:0.8em;
+}
