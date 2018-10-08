@@ -24,6 +24,12 @@ function Client(host) {
     session = _session;
   }
 
+  /**
+   * Initialization
+   * ----
+   * Ack connection, join room.
+   */
+
   this.join = function(roomId) {
     console.log(' * Joining ' + roomId);
     socket.emit('roomId', roomId);
@@ -33,6 +39,21 @@ function Client(host) {
     console.log(' * Connection established');
   });
 
+  this.newMirror = function() {
+    socket.emit('newMirror');
+  }
+
+  this.newHost = function() {
+    socket.emit('newHost');
+  }
+
+  /**
+   * Update game
+   * ----
+   * Receive updates from server, regarding other players
+   * and adjust current game accordingly.
+   */
+
   socket.on('move', function(data) {
     session.movePlayer(
       data["playerId"],
@@ -41,13 +62,11 @@ function Client(host) {
     )
   })
 
-  this.newMirror = function() {
-    socket.emit('newMirror');
-  }
-
-  this.newHost = function() {
-    socket.emit('newHost');
-  }
+  /**
+   * Update server
+   * ----
+   * Send current player's information.
+   */
 
   this.onMove = function(playerId, position, rotation) {
     socket.emit('onMove', {
@@ -118,7 +137,7 @@ function mobilecheck() {
  * Initialize listener for camera
  */
 function initialize() {
-  var host = typeof host === 'https://mirrorvr.alvinwan.com/' ? host;
+  var host = typeof host === 'undefined' ? 'https://mirrorvr.alvinwan.com/' : host;
   var roomId = typeof roomId === 'undefined' ? window.location.href : roomId;
 
   var session = new Session(host);
