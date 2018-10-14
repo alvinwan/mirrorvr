@@ -2,19 +2,8 @@ var express = require('express');
 var app = express();
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
-var format = require('string-format')
-var swig = require('swig');
-var bodyParser = require('body-parser');
 
-/**
- * Setup templates to use Jinja-like rendering
- */
-
-var swig = new swig.Swig();
-app.engine('html', swig.renderFile);
-app.set('view engine', 'html');
 app.use(express.static('static'));
-app.use(bodyParser.urlencoded({ extended: false }))
 
 /**
  * Define pages
