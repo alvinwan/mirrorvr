@@ -9,8 +9,9 @@ To test the demo, just load [`http://mirrorvr.alvinwan.com/demo`](http://mirrorv
 http://mirrorvr.alvinwan.com/demo
 ```
 
-To get started, include this on your webVR project. That's it! Then, load your project on both your **phone** and your **desktop**.
+To get started, include this in your webVR project. That's it! Then, load your project on both your **phone** and your **desktop**.
 
 ```
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.1.1/socket.io.js"></script>
 <script src="http://mirrorvr.alvinwan.com/mirrorvr.js" type="text/javascript"></script>
 ```
