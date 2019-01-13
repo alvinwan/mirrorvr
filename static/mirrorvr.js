@@ -90,10 +90,12 @@ function Session(host, state) {
   this.start = function() {
     client.register(this);
     if (mobilecheck()) {
+      console.log(' * Type: Host')
       client.newHost();
       isHost = true;
       isViewer = false;
     } else {
+      console.log(' * Type: Mirror')
       client.newMirror();
       isHost = false;
       isViewer = true;
