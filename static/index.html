@@ -54,29 +54,50 @@
       </code>
       </a>
 
-      <p>To get started, include these two scripts in your webVR project--socketIO and the MirrorVR source.</p>
+      <h2>Getting Started</h2>
+
+      <p>To get started, include these two scripts in your webVR project, <i>after your AFRAME import</i>.</p>
 
       <code>
-        &lt;script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.1.1/socket.io.js"&gt;&lt;/script&gt;
+        &lt;script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.1.1/socket.io.js"&gt;&lt;/script&gt;<br/>
         &lt;script src="http://mirrorvr.alvinwan.com/mirrorvr.js" type="text/javascript"&gt;&lt;/script&gt;
+      </code>
+
+      <p>Then, add the `camera-listener` AFRAME component to your camera, like below:</p>
+
+      <code>
+      &lt;a-camera camera-listener&gt;&lt;/a-camera&gt;
       </code>
 
       <p>That's it! Then, load your project on both your <b>phone</b> and your <b>desktop</b>.</p>
 
-      <p><b>Note:</b> This project currently only supports <a href="http://aframe.io">aframe.io</a> apps.</p>
-
       <h2>Configuration</h2>
 
-      <p>To configure a variable, define a global Javascript variable before importing the mirrorvr script.</p>
+      <p>Does your game state include more than the camera? Use the `state` configuration option, as below:</p>
 
-      <p><b>Room</b>: By default, every unique URL is a new "room". For example, if
+      <code>
+      function getTime() {
+        return new Date();
+      }
 
-        <ul>
-          <li>user A loads example.com on her phone, and</li>
-          <li>user B loads example.com on his desktop,</li>
-        </ul>
-      user B will be mirroring user A. However, if user C loads example.com#hello on his desktop, he will <i>not</i> mirror user A. Explicitly define a room variable to override this default.</p>
-      <p><b>Host</b>: A NodeJS server is required to facilitate communication between the client and the server. <b>By default, MirrorJS uses and provides one at https://mirrorvr.herokuapp.com/</b>. Explicitly define a host variable to use your own NodeJS server.</p>
+      function setTime(time) {
+        window.time = time;
+      }
+
+      var mirrorvr = {
+        state: [
+          {
+            name: 'time',
+            get: getTime,
+            set: setTime
+          }
+        ]
+      }
+      </code>
+
+      <p>For more information, advanced options, and other configurations, <a href="http://github.com/alvinwan/mirrorvr">see the README</a>.</p>
+
+      <p><b>Pro tip</b>: Have multiple pairs of phones and desktops? Just have each pair load a different anchor. e.g., John and Jane can share example.com#roomA, while Bob and Eve can share example.com#roomB.</p>
       <footer>
         <p>Made by Alvin, powered by cheesecake</p>
       </footer>

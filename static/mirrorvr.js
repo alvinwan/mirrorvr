@@ -6,6 +6,8 @@
  * To get started, simply include the following after you import aframe.
  * <script src="http://mirrorvr.alvinwan.com/mirrorvr.js" type="text/javascript"></script>
  *
+ * Then, add the `camera-listener` AFRAME component to your camera. That's it!
+ *
  * For more information, see http://mirrorvr.alvinwan.com.
  *
  * @author Alvin Wan
@@ -137,8 +139,15 @@ function mobilecheck() {
  * Initialize listener for camera
  */
 function initialize() {
-  var host = typeof host === 'undefined' ? 'https://mirrorvr.herokuapp.com/' : host;
-  var roomId = typeof roomId === 'undefined' ? window.location.href : roomId;
+  if (typeof mirrorvr === 'undefined') {
+    console.log(' * No MirrorVR configuration found. (If you\'re trying to configure, perhaps check spelling?)')
+  } else {
+    console.log(' * MirrorVR configuration found.')
+  }
+
+  mirrorvr = typeof mirrorvr === 'undefined' ? {} : mirrorvr;
+  var host = mirrorvr.host || 'https://mirrorvr.herokuapp.com/';
+  var roomId = mirrorvr.roomId || window.location.href;
 
   var session = new Session(host);
   session.join(roomId);
