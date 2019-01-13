@@ -2,6 +2,11 @@
 <head>
   <meta name="viewport" content="width=device-width, initial-scale=0.85">
   <title>MirrorVR</title>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.15.0/prism.min.js"></script>
+  <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.15.0/components/prism-javascript.min.js"></script> -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.15.0/themes/prism.min.css" rel="stylesheet" />
+
   <link rel="stylesheet" href="styles/style.css">
   <link href="https://fonts.googleapis.com/css?family=Josefin+Slab:300|Montserrat:400,600" rel="stylesheet">
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
@@ -49,59 +54,51 @@
       <p>To test the demo, just load the following URL on both your <b>phone</b> and your <b>desktop</b>.</p>
 
       <a href="/demo">
-      <code>
-      http://mirrorvr.alvinwan.com/demo
-      </code>
+      <pre><code class="language-html">http://mirrorvr.alvinwan.com/demo</code></pre>
       </a>
 
       <h2>Getting Started</h2>
 
       <p>To get started, include these two scripts in your webVR project, <i>after your AFRAME import</i>.</p>
 
-      <pre>
-<code>&lt;script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.1.1/socket.io.js"&gt;&lt;/script&gt;
-&lt;script src="https://cdn.jsdelivr.net/gh/alvinwan/mirrorvr@0.1.0/dist/mirrorvr.min.js"&gt;&lt;/script&gt;
-</code>
-      </pre>
+      <pre><code class="language-html">&lt;script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.1.1/socket.io.js"&gt;&lt;/script&gt;
+&lt;script src="https://cdn.jsdelivr.net/gh/alvinwan/mirrorvr@0.2.0/dist/mirrorvr.min.js"&gt;&lt;/script&gt;</code></pre>
 
-      <p>Then, add the `camera-listener` AFRAME component to your camera, like below:</p>
+      <p>Then, add the `camera-listener` and `onload-init-mirror` AFRAME components to your camera, like below:</p>
 
-      <code>
-      &lt;a-camera camera-listener&gt;&lt;/a-camera&gt;
-      </code>
+      <pre><code class="language-html">&lt;a-camera onload-init-mirror camera-listener&gt;&lt;/a-camera&gt;</code></pre>
 
       <p>That's it! Then, load your project on both your <b>phone</b> and your <b>desktop</b>.</p>
 
       <h2>Configuration</h2>
 
-      <p>Does your game state include more than the camera? First, specify the desktop preview's response to new state information.</p>
+      <p>Need to synchronize more than the camera? MirrorVR uses a notification system:</p>
+      <ol>
+        <li>First, the mobile device sends a notification with information e.g., the current time.</li>
+        <li>Second, the desktop receives the notification with information, updating its local data structures and UI accordingly.</li>
+      </ol>
 
-      <pre>
-<code>function updateTime(time) {
-  window.time = time;
-}
+      <p>First, pick a name for this update. Here, we will use <i>time</i>. Second, send a notification that state has changed. The first argument is the name you picked, and the second is state information.</p>
 
-var mirrorvr = {
+      <pre><code class="language-javascript">mirrorVR.notify('time', new Date());</code></pre>
+
+      <p>Third, process the notification. To do so, pass configuration options into <i>mirrorVR.init</i>.</p>
+
+      <pre><code class="language-javascript">mirrorVR.init({
   state: {
     time: {
-      onNotify: updateTime
+      onNotify: function(data) {
+        console.log('Time is ' + data);
+      }
     }
   }
-}
-</code>
-      </pre>
-
-      <p>Above, `time` is the name of this state information. Then, send state information, using the name.</p>
-
-      <pre>
-<code>MirrorVR.notify('time', new Date());</code>
-      </pre>
+})</code></pre>
 
       <p>For more information, advanced options, and other configurations, <a href="http://github.com/alvinwan/mirrorvr">see the README</a>.</p>
 
       <p><b>Pro tip</b>: Have multiple pairs of phones and desktops? Just have each pair load a different anchor. e.g., John and Jane can share example.com#roomA, while Bob and Eve can share example.com#roomB.</p>
       <footer>
-        <p>Made by Alvin, powered by cheesecake</p>
+        <p>Made by Alvin</p>
       </footer>
     </div>
   </div>

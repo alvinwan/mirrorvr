@@ -14,8 +14,6 @@
  * @site alvinwan.com
  */
 
-var MirrorVR;
-
 /**
  * Manage connection with server, via sockets
  */
@@ -49,6 +47,14 @@ function Client(host) {
 
   this.newHost = function() {
     socket.emit('newHost');
+  }
+
+  /**
+   * Teardown
+   **/
+
+  this.close = function() {
+    socket.close();
   }
 
   /**
@@ -87,21 +93,20 @@ function Session(host, state) {
   var isViewer = true;
   var stateConfiguration = state;
 
-  this.start = function() {
+  this.init = function() {
     client.register(this);
     if (mobilecheck()) {
+      console.log(' * Type: Host')
       client.newHost();
       isHost = true;
       isViewer = false;
     } else {
+      console.log(' * Type: Mirror')
       client.newMirror();
       isHost = false;
       isViewer = true;
     }
-    this.init();
-  }
 
-  this.init = function() {
     for (const [key, value] of Object.entries(stateConfiguration)) {
       if (value.init) {
         value.init();
@@ -124,8 +129,50 @@ function Session(host, state) {
       stateConfiguration[name].onNotify(data);
     }
   }
+
+  this.close = function() {
+    client.close();
+  }
 }
 
+
+/**
+ * Public interface for mirrorVR
+ **/
+function MirrorVR() {
+
+  this.session = null;
+  this.isInitialized = false;
+
+  /**
+   * Initialize MirrorVR configuration and object
+   */
+  this.init = function({
+    state = { camera: DEFAULT_CAMERA },
+    host = 'https://mirrorvr.herokuapp.com/',
+    roomId = window.location.href
+  } = {}) {
+    if (this.isInitialized && this.session != null) {
+      this.session.close();
+      console.warn(
+        'MirrorVR has been initialized more than once. Note that the AFRAME' +
+        'component `onload-init-mirrorvr` initializes MirrorVR too. If using ' +
+        '`mirrorVR.init`, please remove the AFRAME component.');
+    }
+    this.isInitialized = true;
+
+    // default camera configuration
+    state.camera = state.camera || DEFAULT_CAMERA;
+
+    this.session = new Session(host, state);
+    this.session.join(roomId);
+    this.session.init();
+  }
+
+  this.notify = function(name, data) {
+    return this.session.notify(name, data);
+  }
+}
 
 /**
  * Check if client is on mobile
@@ -136,52 +183,33 @@ function mobilecheck() {
   return check;
 };
 
-
-/**
- * Initialize MirrorVR configuration and object
- */
-function initialize() {
-  if (typeof mirrorvr === 'undefined') {
-    console.log(' * No MirrorVR configuration found. (If you\'re trying to configure, perhaps check spelling?)')
-  } else {
-    console.log(' * MirrorVR configuration found.')
-  }
-
-  mirrorvr = typeof mirrorvr === 'undefined' ? {} : mirrorvr;
-  mirrorvr.state = mirrorvr.state || {};
-  mirrorvr.state.camera = mirrorvr.state.camera || defaultCamera;
-
-  var host = mirrorvr.host || 'https://mirrorvr.herokuapp.com/';
-  var roomId = mirrorvr.roomId || window.location.href;
-
-  MirrorVR = new Session(host, mirrorvr.state);
-  MirrorVR.join(roomId);
-  MirrorVR.start();
-}
-
 /**
  * Camera state synchronization
  **/
+AFRAME.registerComponent('camera-listener', {
+ tick: function () {
+   mirrorVR.__camera = this.el.sceneEl.camera.el;
+   var position = mirrorVR.__camera.getAttribute('position');
+   var rotation = mirrorVR.__camera.getAttribute('rotation');
+   mirrorVR.notify('camera', {
+     playerId: 0,
+     position: position,
+     rotation: rotation
+   })
+ }
+});
 
-defaultCamera = {
-  init: function() {
-    AFRAME.registerComponent('camera-listener', {
-      tick: function () {
-        MirrorVR.camera = this.el.sceneEl.camera.el;
-        var position = MirrorVR.camera.getAttribute('position');
-        var rotation = MirrorVR.camera.getAttribute('rotation');
-        MirrorVR.notify('camera', {
-          playerId: 0,
-          position: position,
-          rotation: rotation
-        })
-      }
-    });
-  },
+const DEFAULT_CAMERA = {
   onNotify: function(data) {
-    MirrorVR.camera.setAttribute('rotation', data.rotation);
-    MirrorVR.camera.setAttribute('position', data.position)
+    mirrorVR.__camera.setAttribute('rotation', data.rotation);
+    mirrorVR.__camera.setAttribute('position', data.position)
   }
 }
 
-initialize();
+AFRAME.registerComponent('onload-init-mirrorvr', {
+  init: function() {
+    mirrorVR.init();
+  }
+})
+
+var mirrorVR = new MirrorVR();

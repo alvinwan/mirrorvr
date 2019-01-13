@@ -18,7 +18,7 @@ To get started, include this in your webVR project, after the AFRAME import.
 
 ```
 <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.1.1/socket.io.js"></script>
-<script src="https://cdn.jsdelivr.net/gh/alvinwan/mirrorvr@0.1.0/dist/mirrorvr.min.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/alvinwan/mirrorvr@0.2.0/dist/mirrorvr.min.js"></script>
 ```
 
 Then, add the `camera-listener` AFRAME component to your camera, like below:
@@ -33,10 +33,10 @@ See the [demo's source code](https://github.com/alvinwan/mirrorvr/blob/master/st
 
 # Configuration
 
-To configure MirrorVR, provide the following global object literal `mirrorvr` with optional arguments.
+To configure MirrorVR, manually initialize the `mirrorVR` object.
 
 ```
-var mirrorvr = {
+mirrorVR.init({
 
   /**
    * See the `Rooms` section below for details.
@@ -61,7 +61,7 @@ var mirrorvr = {
       }
     }
   }
-}
+});
 ```
 
 ## Rooms
@@ -75,32 +75,39 @@ By default, every unique URL is a new "room". For example, if
 user B will mirror user A but user C will *not* mirror user A. To override this default, configure `roomId`.
 
 ```
-var mirrorvr = {
+mirrorVR.init({
   ...
   roomId: 'myUniversalRoomName',
   ...
-}
+});
 ```
 
 ## State
 
-To synchronize state, define behavior when sending and receiving state information. Send information from the phone via the `MirrorVR.notify` function as follows. Here, we have picked an arbitrary name `camera` for this state.
+Need to synchronize more than the camera? MirrorVR uses a notification system:
+
+1. First, the mobile device sends a notification with information e.g., current time.
+2. Second, the desktop receives the notification with information, updating its local data structures and UI accordingly.
+
+First, pick a name for this update. Here, we will use `time`.
+
+Second, send a notification that state has changed. The first argument is the name you picked, and the second is state information.
 
 ```
-MirrorVR.notify('position', {index: 0})
+mirrorVR.notify('time', new Date());
 ```
 
-Then, amend your `mirrorvr` state configuration to include a handler for the desktop. The key `camera` below must match the arbitrary name we picked earlier, for `MirrorVR.notify`.
+Then, amend your state configuration to include a handler for the desktop. The key `camera` below must match the arbitrary name we picked earlier, for `MirrorVR.notify`.
 
 ```
-var mirrorvr = {
+mirrorVR.init({
   state: {
     ...
-    position: {
+    time: {
       onNotify: function(data) {
-        console.log('Position is ' + data.index);
+        console.log('Time is ' + data);
       }
     }
   }
-}
+});
 ```
