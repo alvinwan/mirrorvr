@@ -18,7 +18,7 @@ To get started, include this in your webVR project, after the AFRAME import.
 
 ```
 <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.1.1/socket.io.js"></script>
-<script src="http://mirrorvr.alvinwan.com/mirrorvr.js" type="text/javascript"></script>
+<script src="https://cdn.jsdelivr.net/gh/alvinwan/mirrorvr@0.1.0/dist/mirrorvr.min.js"></script>
 ```
 
 Then, add the `camera-listener` AFRAME component to your camera, like below:
@@ -50,7 +50,7 @@ var mirrorvr = {
    * your own NodeJS server.
    **/
   host: 'https://myOwnServer.com/',
-  
+
   /**
    * See the `State` section below for details.
    **/
@@ -104,4 +104,3 @@ var mirrorvr = {
   }
 }
 ```
-
