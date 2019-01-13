@@ -58,10 +58,11 @@
 
       <p>To get started, include these two scripts in your webVR project, <i>after your AFRAME import</i>.</p>
 
-      <code>
-        &lt;script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.1.1/socket.io.js"&gt;&lt;/script&gt;<br/>
-        &lt;script src="http://mirrorvr.alvinwan.com/mirrorvr.js" type="text/javascript"&gt;&lt;/script&gt;
-      </code>
+      <pre>
+<code>&lt;script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.1.1/socket.io.js"&gt;&lt;/script&gt;
+&lt;script src="http://mirrorvr.alvinwan.com/mirrorvr.js" type="text/javascript"&gt;&lt;/script&gt;
+</code>
+      </pre>
 
       <p>Then, add the `camera-listener` AFRAME component to your camera, like below:</p>
 
@@ -75,25 +76,26 @@
 
       <p>Does your game state include more than the camera? Use the `state` configuration option, as below:</p>
 
-      <code>
-      function getTime() {
-        return new Date();
-      }
+      <pre>
+<code>function getTime() {
+  return new Date();
+}
 
-      function setTime(time) {
-        window.time = time;
-      }
+function setTime(time) {
+  window.time = time;
+}
 
-      var mirrorvr = {
-        state: [
-          {
-            name: 'time',
-            get: getTime,
-            set: setTime
-          }
-        ]
-      }
-      </code>
+var mirrorvr = {
+  state: [
+    {
+      name: 'time',
+      get: getTime,
+      set: setTime
+    }
+  ]
+}
+</code>
+      </pre>
 
       <p>For more information, advanced options, and other configurations, <a href="http://github.com/alvinwan/mirrorvr">see the README</a>.</p>
 
