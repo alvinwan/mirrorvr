@@ -42,8 +42,8 @@ io.on('connection', function(socket) {
 
   socket.on('newHost', function() {
     console.log(" * [" + socket.room +  "] participant registered as 'host'")
-    socket.on('onMove', function(data) {
-      socket.broadcast.to(socket.room).emit('move', data)
+    socket.on('notify', function(data) {
+      socket.broadcast.to(socket.room).emit('onNotify', data)
     });
   });
 });

@@ -74,27 +74,27 @@
 
       <h2>Configuration</h2>
 
-      <p>Does your game state include more than the camera? Use the `state` configuration option, as below:</p>
+      <p>Does your game state include more than the camera? First, specify the desktop preview's response to new state information.</p>
 
       <pre>
-<code>function getTime() {
-  return new Date();
-}
-
-function setTime(time) {
+<code>function updateTime(time) {
   window.time = time;
 }
 
 var mirrorvr = {
-  state: [
-    {
-      name: 'time',
-      get: getTime,
-      set: setTime
+  state: {
+    time: {
+      onNotify: updateTime
     }
-  ]
+  }
 }
 </code>
+      </pre>
+
+      <p>Above, `time` is the name of this state information. Then, send state information, using the name.</p>
+
+      <pre>
+<code>MirrorVR.notify('time', new Date());</code>
       </pre>
 
       <p>For more information, advanced options, and other configurations, <a href="http://github.com/alvinwan/mirrorvr">see the README</a>.</p>

@@ -14,6 +14,8 @@
  * @site alvinwan.com
  */
 
+var MirrorVR;
+
 /**
  * Manage connection with server, via sockets
  */
@@ -38,7 +40,7 @@ function Client(host) {
   }
 
   socket.on('connect', function() {
-    console.log(' * Connection established');
+    console.log(' * Connection established with ' + host);
   });
 
   this.newMirror = function() {
@@ -56,12 +58,8 @@ function Client(host) {
    * and adjust current game accordingly.
    */
 
-  socket.on('move', function(data) {
-    session.movePlayer(
-      data["playerId"],
-      data["position"],
-      data["rotation"]
-    )
+  socket.on('onNotify', function(raw) {
+    session.onNotify(raw.name, raw.data);
   })
 
   /**
@@ -70,12 +68,11 @@ function Client(host) {
    * Send current player's information.
    */
 
-  this.onMove = function(playerId, position, rotation) {
-    socket.emit('onMove', {
-      "playerId": playerId,
-      "position": position,
-      "rotation": rotation
-    });
+  this.notify = function(name, data) {
+    socket.emit('notify', {
+      name: name,
+      data: data
+    })
   }
 }
 
@@ -83,11 +80,12 @@ function Client(host) {
 /**
  * Manage game session
  */
-function Session(host) {
+function Session(host, state) {
 
   var client = new Client(host);
   var isHost = false;
   var isViewer = true;
+  var stateConfiguration = state;
 
   this.start = function() {
     client.register(this);
@@ -100,26 +98,30 @@ function Session(host) {
       isHost = false;
       isViewer = true;
     }
+    this.init();
+  }
+
+  this.init = function() {
+    for (const [key, value] of Object.entries(stateConfiguration)) {
+      if (value.init) {
+        value.init();
+      }
+    }
   }
 
   this.join = function(roomId) {
     client.join(roomId);
   }
 
-  this.registerCamera = function(camera) {
-    this.camera = camera
-  }
-
-  this.onMove = function(playerId, position, rotation) {
+  this.notify = function(name, data) {
     if (isHost) {
-      client.onMove(playerId, position, rotation);
+      client.notify(name, data);
     }
   }
 
-  this.movePlayer = function(playerId, position, rotation) {
+  this.onNotify = function(name, data) {
     if (isViewer) {
-      this.camera.setAttribute('rotation', rotation);
-      this.camera.setAttribute('position', position);
+      stateConfiguration[name].onNotify(data);
     }
   }
 }
@@ -136,7 +138,7 @@ function mobilecheck() {
 
 
 /**
- * Initialize listener for camera
+ * Initialize MirrorVR configuration and object
  */
 function initialize() {
   if (typeof mirrorvr === 'undefined') {
@@ -146,21 +148,40 @@ function initialize() {
   }
 
   mirrorvr = typeof mirrorvr === 'undefined' ? {} : mirrorvr;
+  mirrorvr.state = mirrorvr.state || {};
+  mirrorvr.state.camera = mirrorvr.state.camera || defaultCamera;
+
   var host = mirrorvr.host || 'https://mirrorvr.herokuapp.com/';
   var roomId = mirrorvr.roomId || window.location.href;
 
-  var session = new Session(host);
-  session.join(roomId);
-  session.start();
+  MirrorVR = new Session(host, mirrorvr.state);
+  MirrorVR.join(roomId);
+  MirrorVR.start();
+}
 
-  AFRAME.registerComponent('camera-listener', {
-    tick: function () {
-      session.registerCamera(this.el.sceneEl.camera.el);
-      var position = session.camera.getAttribute('position');
-      var rotation = session.camera.getAttribute('rotation');
-      session.onMove(0, position, rotation);
-    }
-  });
+/**
+ * Camera state synchronization
+ **/
+
+defaultCamera = {
+  init: function() {
+    AFRAME.registerComponent('camera-listener', {
+      tick: function () {
+        MirrorVR.camera = this.el.sceneEl.camera.el;
+        var position = MirrorVR.camera.getAttribute('position');
+        var rotation = MirrorVR.camera.getAttribute('rotation');
+        MirrorVR.notify('camera', {
+          playerId: 0,
+          position: position,
+          rotation: rotation
+        })
+      }
+    });
+  },
+  onNotify: function(data) {
+    MirrorVR.camera.setAttribute('rotation', data.rotation);
+    MirrorVR.camera.setAttribute('position', data.position)
+  }
 }
 
 initialize();
