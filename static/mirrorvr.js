@@ -65,6 +65,7 @@ function Client(host) {
    */
 
   socket.on('onNotify', function(raw) {
+    console.log('[' + raw.name + '] Received notification: ', raw.data);
     session.onNotify(raw.name, raw.data);
   })
 
@@ -75,6 +76,7 @@ function Client(host) {
    */
 
   this.notify = function(name, data) {
+    console.log('[' + name + '] Sending notification: ', data);
     socket.emit('notify', {
       name: name,
       data: data
@@ -126,7 +128,11 @@ function Session(host, state) {
 
   this.onNotify = function(name, data) {
     if (isViewer) {
-      stateConfiguration[name].onNotify(data);
+      if (!stateConfiguration[name]) {
+        console.warn('Could not find configuration for incoming notification with name "' + name + '".')
+      } else {
+        stateConfiguration[name].onNotify(data);
+      }
     }
   }
 
