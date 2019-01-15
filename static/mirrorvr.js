@@ -6,7 +6,8 @@
  * To get started, simply include the following after you import aframe.
  * <script src="http://mirrorvr.alvinwan.com/mirrorvr.js" type="text/javascript"></script>
  *
- * Then, add the `camera-listener` AFRAME component to your camera. That's it!
+ * Then, add the `camera-listener` and `onload-init-mirrorvr` AFRAME components
+ * to your camera. That's it!
  *
  * For more information, see http://mirrorvr.alvinwan.com.
  *
@@ -129,7 +130,7 @@ function Session(host, state) {
   this.onNotify = function(name, data) {
     if (isViewer) {
       if (!stateConfiguration[name]) {
-        console.warn('Could not find configuration for incoming notification with name "' + name + '".')
+        console.warn('[' + name + '] Received notification but could not find configuration.');
       } else {
         stateConfiguration[name].onNotify(data);
       }
@@ -154,9 +155,9 @@ function MirrorVR() {
    * Initialize MirrorVR configuration and object
    */
   this.init = function({
-    state = { camera: DEFAULT_CAMERA },
     host = 'https://mirrorvr.herokuapp.com/',
-    roomId = window.location.href
+    roomId = window.location.href,
+    state = { camera: DEFAULT_CAMERA },
   } = {}) {
     if (this.isInitialized && this.session != null) {
       this.session.close();
@@ -176,7 +177,13 @@ function MirrorVR() {
   }
 
   this.notify = function(name, data) {
-    return this.session.notify(name, data);
+    if (this.session) {
+      return this.session.notify(name, data);
+    }
+    console.warn(
+      '[' + name + '] Failed to notify. MirrorVR not initialized. Please ' +
+      ' add the `onload-init-mirrorvr` AFRAME component to any AFRAME entity ' +
+      'or manually invoke `mirrorVR.init`.', data);
   }
 }
 
