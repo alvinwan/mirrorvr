@@ -150,6 +150,7 @@ function MirrorVR() {
 
   this.session = null;
   this.isInitialized = false;
+  this.roomId = null;
 
   /**
    * Initialize MirrorVR configuration and object
@@ -158,6 +159,7 @@ function MirrorVR() {
     host = 'https://mirrorvr.herokuapp.com/',
     roomId = window.location.href,
     state = { camera: DEFAULT_CAMERA },
+    init = function() {},
   } = {}) {
     if (this.isInitialized && this.session != null) {
       this.session.close();
@@ -171,9 +173,14 @@ function MirrorVR() {
     // default camera configuration
     state.camera = state.camera || DEFAULT_CAMERA;
 
+    // expose roomId globally
+    this.roomId = roomId;
+
     this.session = new Session(host, state);
     this.session.join(roomId);
     this.session.init();
+
+    init();
   }
 
   this.notify = function(name, data) {
