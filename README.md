@@ -111,3 +111,5 @@ mirrorVR.init({
   }
 });
 ```
+
+Note to self: When deploying, `uglifyjs static/mirrorvr.js dist/mirrorvr.min.js`, and update the version number in `package.json`.
