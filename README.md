@@ -18,7 +18,7 @@ To get started, include this in your webVR project, after the AFRAME import.
 
 ```
 <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.1.1/socket.io.js"></script>
-<script src="https://cdn.jsdelivr.net/gh/alvinwan/mirrorvr@0.2.1/dist/mirrorvr.min.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/alvinwan/mirrorvr@0.2.2/dist/mirrorvr.min.js"></script>
 ```
 
 Then, add the `camera-listener` and `onload-init-mirrorvr` AFRAME components to your camera, like below:
